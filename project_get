@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# print color msg
+function color_msg()
+{
+	printf '\e['$1';5;'$2'm' # change console color to green
+	echo $3
+	printf '\e[0m' # reset color settings - set to default
+}
+
+color_msg 38 10 "<<< Start project getting >>>"
+
+# test initial data
+source_dir=~/Programming/linux/functions/get_project/dir1
+dest_dir=~/Programming/linux/functions/get_project/dir2
+
+# release initial data
+#source_dir=/media/oleg/OLGERD/edir/to_h/Starts_db
+#dest_dir=~/Programming/qt/projects/Starts_data_base/development
+	
+project_dir=project
+arch_ext=zip
+arch_file_name=$project_dir.$arch_ext
+
+# move archive file from source dir to the destination dir
+if [ -e "$source_dir/$arch_file_name" ]; then # check - is file exists in the source dir
+	cp -p "$source_dir/$arch_file_name" "$dest_dir" # make copy
+else
+	color_msg 38 196 "!---Error. Cannot perform copy. The initial file $source_dir/$arch_file_name does't exists"
+	exit
+fi
+if [ -e "$dest_dir/$arch_file_name" ]; then
+	rm "$source_dir/$arch_file_name" # if file was copied, remove file from the source dir
+	echo "File $source_dir/$arch_file_name moved successfully"
+else
+	color_msg 38 196 "!---Error. Cannot copy the file: $source_dir/$arch_file_name"
+	exit
+fi
+
+# delete earlier unziped directory
+if [ -d "$dest_dir/$project_dir" ]; then
+	rm -r "$dest_dir/$project_dir"
+fi
+
+# unzip and check the successful result of function running
+echo "Start unzip the $dest_dir/$arch_file_name"
+unzip -q "$dest_dir/$arch_file_name" -d "$dest_dir" # "-q" -> "quietly" unzip -> unzip without printing files names
+
+if [ -e "$dest_dir/$project_dir" ]; then
+	echo "Unzip finished successfully"
+	echo "Content of the $dest_dir:"
+	ls -l $dest_dir
+else
+	color_msg 38 196 "!---Error. The result directory: $dest_dir/$project_dir doesn't exists"
+	exit
+fi
+color_msg 38 10 "<<< DONE! >>>"
