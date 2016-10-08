@@ -1,0 +1,49 @@
+#!/bin/bash
+# Archive project on comp and copy it to the flesh
+
+# print color msg
+function color_msg()
+{
+	printf '\e['$1';5;'$2'm' # change console color to green
+	echo $3
+	printf '\e[0m' # reset color settings - set to default
+}
+
+color_msg 38 10 "<<< Start project sending >>>"
+
+# release initial data
+source_dir=~/Programming/qt/projects/Starts_data_base/development
+dest_dir=/media/oleg/OLGERD/edir/to_w/Starts_db
+
+project_dir=project
+arch_ext=zip
+arch_file_name=$project_dir.$arch_ext
+
+if [ ! -e "$source_dir/$project_dir" ]; then
+    color_msg 38 196 "!---Error. The project directory: $source_dir/$project_dir doesn't exists"
+	exit
+fi
+
+if [ -e "$source_dir/$arch_file_name" ]; then
+	rm "$source_dir/$arch_file_name"
+fi
+
+# archive project and copy it to the destination dir
+current_dir=$(pwd) # save current dir
+cd "$source_dir" # for correct archiving there are need to go to the source_dir
+echo "Start archiving the $source_dir/$project_dir"
+zip -rq "./$arch_file_name" "./$project_dir"
+echo "Archiving finished"
+cd "$current_dir" # restore current dir
+cp -p "$source_dir/$arch_file_name" "$dest_dir" # copy archive file
+
+if [ -e "$dest_dir/$arch_file_name" ]; then
+	echo "File $source_dir/$arch_file_name copied successfully to the $dest_dir"
+    echo "Content of the $dest_dir:"
+	ls -l $dest_dir
+else
+	color_msg 38 196 "!---Error. The directory: $dest_dir haven't the file: $arch_file_name"
+	exit
+fi
+color_msg 38 10 "<<< DONE! >>>"
+

@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copy project from the flesh to comp and unzip
 
 # print color msg
 function color_msg()
@@ -10,14 +11,10 @@ function color_msg()
 
 color_msg 38 10 "<<< Start project getting >>>"
 
-# test initial data
-source_dir=~/Programming/linux/functions/get_project/dir1
-dest_dir=~/Programming/linux/functions/get_project/dir2
-
 # release initial data
-#source_dir=/media/oleg/OLGERD/edir/to_h/Starts_db
-#dest_dir=~/Programming/qt/projects/Starts_data_base/development
-	
+source_dir=/media/oleg/OLGERD/edir/to_h/Starts_db
+dest_dir=~/Programming/qt/projects/Starts_data_base/development
+
 project_dir=project
 arch_ext=zip
 arch_file_name=$project_dir.$arch_ext
