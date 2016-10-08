@@ -1,13 +1,6 @@
 #!/bin/bash
 # Copy project from the flesh to comp and unzip
-
-# print color msg
-function color_msg()
-{
-	printf '\e['$1';5;'$2'm' # change console color to green
-	echo $3
-	printf '\e[0m' # reset color settings - set to default
-}
+source ./common/decor.sh
 
 color_msg 38 10 "<<< Start project getting >>>"
 
